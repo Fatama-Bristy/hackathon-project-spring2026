@@ -1,10 +1,13 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom'; // এই লাইনটি যোগ করুন
+import App from './App';
+import './index.css'; // আপনার সিএসএস ফাইল
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <BrowserRouter> {/* পুরো অ্যাপকে ব্রাউজার রাউটার দিয়ে ঘিরে দিন */}
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>
+);
