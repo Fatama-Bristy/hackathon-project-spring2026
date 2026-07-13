@@ -11,7 +11,9 @@ import CorruptionLedger from './features/CorruptionLedger';
 import Whistleblower from './features/WhistleblowerPortal';
 import SosFlareScreen from './features/SosFlareScreen'; 
 import SemanticFactChecker from './features/SemanticFactChecker';
-import SystemSettings from './features/SystemSettings'; // সঠিক ফাইল নেম দিয়ে ইমপোর্ট
+import SystemSettings from './features/SystemSettings';
+// নতুন ইমপোর্ট এখানে যুক্ত করা হয়েছে:
+import LAlphaOperatorDashboard from './features/LAlphaOperatorDashboard';
 
 function App() {
   const [screen, setScreen] = useState('landing'); 
@@ -55,7 +57,9 @@ function App() {
           {screen === 'whistleblower' && <Whistleblower />}
           {screen === 'sos-flare' && <SosFlareScreen />}
           {screen === 'semantic-fact-checker' && <SemanticFactChecker />}
-          {screen === 'settings' && <SystemSettings />} 
+          {screen === 'settings' && <SystemSettings />}
+          {/* নতুন স্ক্রিনটি এখানে যুক্ত করা হয়েছে: */}
+          {screen === 'crime-economy' && <LAlphaOperatorDashboard />}
         </div>
       </div>
     </div>

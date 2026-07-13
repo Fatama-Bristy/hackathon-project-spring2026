@@ -13,6 +13,7 @@ export default function TacticalSosInterface() {
   ]);
 
   const logTerminalRef = useRef(null);
+  const audioTagRef = useRef(null); // HTML5 audio tag reference
 
   const threatLevels = {
     1: "LEVEL 1: MINOR ANNOYANCE",
@@ -38,19 +39,38 @@ export default function TacticalSosInterface() {
     }
   }, [logs]);
 
+  // Handle SOS Click
   const handleSosToggle = () => {
     if (!isSosActive) {
       setIsSosActive(true);
       addLog(`SOS FLARE INITIATED for ${targetSector}. Broadcasting to all sectors.`, 'emergency');
+      
+      // Play Audio
+      if (audioTagRef.current) {
+        audioTagRef.current.play().catch((err) => {
+          console.error("Audio playback failed: ", err);
+        });
+      }
     } else {
       setIsSosActive(false);
       addLog('FLARE RESET. Scanning for new threats...', 'reset');
+      
+      // Pause and Reset Audio
+      if (audioTagRef.current) {
+        audioTagRef.current.pause();
+        audioTagRef.current.currentTime = 0;
+      }
     }
   };
 
   const handleManualReset = () => {
     setIsSosActive(false);
     addLog('Manual hardware diagnostic completed. All systems functional.', 'info');
+    
+    if (audioTagRef.current) {
+      audioTagRef.current.pause();
+      audioTagRef.current.currentTime = 0;
+    }
   };
 
   const handleQuickFill = (sector) => {
@@ -67,7 +87,10 @@ export default function TacticalSosInterface() {
         fontFamily: "'Inter', sans-serif"
       }}
     >
-      {/* Dynamic Keyframes inject dynamically */}
+      {/* HTML5 Audio Component - Hidden but handles the sound from public folder */}
+      <audio ref={audioTagRef} src="/alarm.mp3" loop preload="auto" />
+
+      {/* Dynamic Keyframes */}
       <style>{`
         @keyframes scanline {
           0% { transform: translateY(-100%); }
@@ -167,11 +190,10 @@ export default function TacticalSosInterface() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-[1440px]">
-          {/* Left Panel: Quantum Launchpad */}
+          {/* Left Panel */}
           <div className="lg:col-span-7 space-y-8">
             <div className="relative bg-white border border-[#e9bcba]/30 p-8 md:p-12 flex flex-col items-center justify-center min-h-[500px] scanline-effect overflow-hidden border-2 border-slate-900 shadow-[4px_4px_0px_0px_#0F172A]">
               
-              {/* Matrix Blueprint Grid Overlay */}
               <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
               
               {/* Massive Circular Flare Trigger */}
@@ -185,7 +207,7 @@ export default function TacticalSosInterface() {
                 
                 <button 
                   onClick={handleSosToggle}
-                  className={`relative w-64 h-64 rounded-full flex flex-col items-center justify-center text-white transition-all duration-300 transform active:scale-90 shadow-[6px_6px_0px_0px_#ba0029] z-10 rounded-full border border-black outline-none ${
+                  className={`relative w-64 h-64 rounded-full flex flex-col items-center justify-center text-white transition-all duration-300 transform active:scale-90 shadow-[6px_6px_0px_0px_#ba0029] z-10 border border-black outline-none ${
                     isSosActive ? 'bg-[#ba1a1a] animate-[emergency-pulse_1s_cubic-bezier(0.4,0,0.6,1)_infinite]' : 'bg-[#ba0029]'
                   }`}
                 >
@@ -198,9 +220,8 @@ export default function TacticalSosInterface() {
                 </button>
               </div>
 
-              {/* Sub Matrix Parameter Configurations */}
+              {/* Configurations */}
               <div className="mt-12 w-full max-w-md space-y-6" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-                {/* Dynamic Target Selection Row */}
                 <div className="space-y-2">
                   <label className="font-mono text-[10px] text-[#ba0029] font-bold uppercase tracking-widest">Target Sector Selection</label>
                   <div className="relative">
@@ -218,7 +239,6 @@ export default function TacticalSosInterface() {
                   </div>
                 </div>
 
-                {/* Tactical Quick Macro Buttons */}
                 <div className="flex flex-wrap gap-2">
                   {['QUICK_CANTEEN', 'SQUAD_7', 'PANIC_VALVE'].map((sector) => (
                     <button 
@@ -247,17 +267,10 @@ export default function TacticalSosInterface() {
                     onChange={(e) => setThreatLevel(Number(e.target.value))}
                     className="w-full h-1 bg-[#e0e3e5] appearance-none cursor-pointer accent-[#ba0029]"
                   />
-                  <div className="flex justify-between text-[8px] font-bold opacity-50 px-1">
-                    <span>L1: MINOR</span>
-                    <span>L3: CRITICAL</span>
-                    <span>L5: SIEGE</span>
-                  </div>
                 </div>
-
               </div>
             </div>
 
-            {/* Hardware Refresh Logic Trigger */}
             <div className="flex justify-end">
               <button 
                 onClick={handleManualReset}
@@ -270,10 +283,8 @@ export default function TacticalSosInterface() {
             </div>
           </div>
 
-          {/* Right Panel: Interception Monitor */}
+          {/* Right Panel */}
           <div className="lg:col-span-5 space-y-6">
-            
-            {/* Health Matrix Card */}
             <div className="bg-white border-2 border-slate-900 p-6 space-y-6 shadow-[4px_4px_0px_0px_#0F172A]" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
               <div className="flex items-center justify-between border-b border-[#e9bcba]/20 pb-4">
                 <div className="flex items-center gap-2">
@@ -293,20 +304,6 @@ export default function TacticalSosInterface() {
                   <p className="text-2xl font-black text-slate-900">0.08s</p>
                 </div>
               </div>
-
-              <div className="space-y-3">
-                <div className="flex justify-between items-center text-[10px]">
-                  <span className="text-[#5f3e3e]">Network Status:</span>
-                  <span className="text-[#ba0029] font-bold">ALL CAPTAINS EN-ROUTE</span>
-                </div>
-                <div className="w-full bg-[#e0e3e5] h-1 overflow-hidden">
-                  <div className="bg-[#ba0029] h-full w-[85%] animate-pulse"></div>
-                </div>
-                <div className="flex justify-between items-center text-[10px]">
-                  <span className="text-[#5f3e3e]">Est. Interception:</span>
-                  <span className="text-[#ba0029] font-bold">45.02s</span>
-                </div>
-              </div>
             </div>
 
             {/* Live Terminal Output Logger */}
@@ -320,10 +317,7 @@ export default function TacticalSosInterface() {
                 <span className="text-[10px] opacity-60 font-bold">TERMINAL_DISPATCH_LOG</span>
               </div>
               
-              <div 
-                ref={logTerminalRef}
-                className="flex-1 overflow-y-auto text-xs space-y-2 scroll-smooth pr-1"
-              >
+              <div ref={logTerminalRef} className="flex-1 overflow-y-auto text-xs space-y-2 scroll-smooth pr-1">
                 {logs.map((log) => {
                   let textClass = 'text-white/60';
                   if (log.type === 'system' || log.type === 'reset') textClass = 'text-emerald-400 font-medium';
@@ -337,13 +331,7 @@ export default function TacticalSosInterface() {
                   );
                 })}
               </div>
-
-              <div className="mt-4 pt-4 border-t border-white/10 flex items-center gap-2">
-                <span className="text-emerald-400 animate-pulse font-bold">&gt;</span>
-                <div className="h-4 w-1 bg-white animate-bounce"></div>
-              </div>
             </div>
-
           </div>
         </div>
       </main>

@@ -5,13 +5,14 @@ export default function Navbar({ activeTab, setActiveTab, darkMode, toggleTheme 
   const navItems = [
     { id: "landing", title: "LANDING", icon: <Home size={16} /> },
     { id: "dashboard", title: "DASHBOARD", icon: <LayoutDashboard size={16} /> },
-    { id: "economy-ledger", title: "CRIME ECONOMY", icon: <TrendingUp size={16} /> },
+    // এখানে id টি 'economy-ledger' থেকে পরিবর্তন করে 'crime-economy' করে দিয়েছি
+    { id: "crime-economy", title: "CRIME ECONOMY", icon: <TrendingUp size={16} /> },
   ];
 
   return (
     <nav className={`sticky top-0 z-50 w-full border-b transition-colors duration-300 ${darkMode ? 'bg-slate-900 border-slate-700' : 'bg-white border-gray-200'}`}>
       <div className="max-w-7xl mx-auto h-16 px-8 flex items-center justify-between">
-        {/* লোগো সেকশন সরানো হয়েছে */}
+        {/* লোগো সেকশন */}
         <div className="w-1/4"></div>
 
         <div className="flex-1 flex justify-center items-center gap-10">
