@@ -6,7 +6,11 @@ import Sidebar from './components/Sidebar';
 import AntiKuddusRegister from './features/SignUP';
 import TacticalSeatingPlanner from './features/TacticalSeatingPlanner';
 import AISyllabusEngine from './features/AISyllabusEngine';
-import CorruptionLedger from './features/CorruptionLedger'; // আপনার CorruptionLedger ইমপোর্ট করলাম
+import CorruptionLedger from './features/CorruptionLedger';
+import Whistleblower from './features/WhistleblowerPortal';
+import SosFlareScreen from './features/SosFlareScreen'; 
+import SemanticFactChecker from './features/SemanticFactChecker'; 
+import SystemSettings from './features/SystemSettings'; // ইমপোর্ট করা হলো
 
 function App() {
   const [screen, setScreen] = useState('landing'); 
@@ -29,7 +33,8 @@ function App() {
     return <AntiKuddusRegister onBack={() => setScreen('login')} />;
   }
 
-  const allMissions = ['dashboard', 'seating', 'ai-syllabus', 'whistleblower', 'economy-ledger', 'sos-flare', 'architecture'];
+  // 'settings' এখানে যুক্ত করা হয়েছে
+  const allMissions = ['dashboard', 'seating', 'ai-syllabus', 'whistleblower', 'economy-ledger', 'sos-flare', 'semantic-fact-checker', 'settings'];
 
   if (allMissions.includes(screen)) {
     return (
@@ -41,33 +46,14 @@ function App() {
         /> 
         
         <div className="flex-1 md:pl-64">
-          {screen === 'dashboard' && (
-            <MainDashboard onLogout={() => setScreen('landing')} />
-          )}
-          {screen === 'seating' && (
-            <TacticalSeatingPlanner />
-          )}
-          {screen === 'ai-syllabus' && (
-            <AISyllabusEngine />
-          )}
-          
-          {/* এখানে economy-ledger এর জন্য CorruptionLedger যুক্ত করা হয়েছে */}
-          {screen === 'economy-ledger' && (
-            <CorruptionLedger />
-          )}
-          
-          {['whistleblower', 'sos-flare', 'architecture'].includes(screen) && (
-            <div className="flex flex-col items-center justify-center h-screen text-white">
-              <h2 className="text-2xl font-bold mb-4">MISSION: {screen.toUpperCase()}</h2>
-              <p className="mb-6">এই মিশনটি বর্তমানে ডেভেলপমেন্ট পর্যায়ে আছে।</p>
-              <button 
-                onClick={() => setScreen('dashboard')}
-                className="bg-[#ba0029] px-6 py-2 rounded font-bold"
-              >
-                BACK TO DASHBOARD
-              </button>
-            </div>
-          )}
+          {screen === 'dashboard' && <MainDashboard onLogout={() => setScreen('landing')} />}
+          {screen === 'seating' && <TacticalSeatingPlanner />}
+          {screen === 'ai-syllabus' && <AISyllabusEngine />}
+          {screen === 'economy-ledger' && <CorruptionLedger />}
+          {screen === 'whistleblower' && <Whistleblower />}
+          {screen === 'sos-flare' && <SosFlareScreen />}
+          {screen === 'semantic-fact-checker' && <SemanticFactChecker />}
+          {screen === 'settings' && <SystemSettings />} 
         </div>
       </div>
     );
