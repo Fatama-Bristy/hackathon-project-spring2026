@@ -3,47 +3,51 @@ import LandingPage from './features/LandingPage';
 import Login from './features/Login';
 import MainDashboard from './features/MainDashboard'; 
 import Sidebar from './components/Sidebar';
+import Navbar from './components/Navbar';
 import AntiKuddusRegister from './features/SignUP';
 import TacticalSeatingPlanner from './features/TacticalSeatingPlanner';
 import AISyllabusEngine from './features/AISyllabusEngine';
 import CorruptionLedger from './features/CorruptionLedger';
 import Whistleblower from './features/WhistleblowerPortal';
 import SosFlareScreen from './features/SosFlareScreen'; 
-import SemanticFactChecker from './features/SemanticFactChecker'; 
+import SemanticFactChecker from './features/SemanticFactChecker';
+import SystemSettings from './features/SystemSettings'; // সঠিক ফাইল নেম দিয়ে ইমপোর্ট
 
 function App() {
   const [screen, setScreen] = useState('landing'); 
+  const [darkMode, setDarkMode] = useState(false);
 
-  if (screen === 'landing') {
-    return <LandingPage onLoginClick={() => setScreen('login')} />;
-  }
+  const toggleTheme = () => setDarkMode(!darkMode);
 
-  if (screen === 'login') {
+  // Auth Screens
+  if (['landing', 'login', 'signup'].includes(screen)) {
     return (
-      <Login 
-        onBack={() => setScreen('landing')} 
-        onLoginSuccess={() => setScreen('dashboard')} 
-        onSignUpClick={() => setScreen('signup')} 
-      />
+      <div className={darkMode ? 'dark bg-slate-950 min-h-screen' : 'bg-white min-h-screen'}>
+        {screen === 'landing' && <LandingPage onLoginClick={() => setScreen('login')} onSignUpClick={() => setScreen('signup')} />}
+        {screen === 'login' && <Login onBack={() => setScreen('landing')} onLoginSuccess={() => setScreen('dashboard')} onSignUpClick={() => setScreen('signup')} />}
+        {screen === 'signup' && <AntiKuddusRegister onBack={() => setScreen('login')} />}
+      </div>
     );
   }
 
-  if (screen === 'signup') {
-    return <AntiKuddusRegister onBack={() => setScreen('login')} />;
-  }
-
-  const allMissions = ['dashboard', 'seating', 'ai-syllabus', 'whistleblower', 'economy-ledger', 'sos-flare', 'semantic-fact-checker'];
-
-  if (allMissions.includes(screen)) {
-    return (
-      <div className="flex min-h-screen bg-slate-950">
+  // Main App Screens
+  return (
+    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'}`}>
+      <Navbar 
+        activeTab={screen} 
+        setActiveTab={setScreen} 
+        darkMode={darkMode} 
+        toggleTheme={toggleTheme} 
+      />
+      
+      <div className="flex">
         <Sidebar 
           onLogout={() => setScreen('landing')} 
           onNavigate={(targetScreen) => setScreen(targetScreen)}
           currentScreen={screen}
         /> 
         
-        <div className="flex-1 md:pl-64">
+        <div className="flex-1 md:pl-64 p-8">
           {screen === 'dashboard' && <MainDashboard onLogout={() => setScreen('landing')} />}
           {screen === 'seating' && <TacticalSeatingPlanner />}
           {screen === 'ai-syllabus' && <AISyllabusEngine />}
@@ -51,12 +55,11 @@ function App() {
           {screen === 'whistleblower' && <Whistleblower />}
           {screen === 'sos-flare' && <SosFlareScreen />}
           {screen === 'semantic-fact-checker' && <SemanticFactChecker />}
+          {screen === 'settings' && <SystemSettings />} 
         </div>
       </div>
-    );
-  }
-
-  return null;
+    </div>
+  );
 }
 
 export default App;
