@@ -46,12 +46,6 @@ export default function Sidebar({ onLogout, onNavigate, currentScreen }) {
                 
                 <div className="flex flex-col gap-3 pt-2">
                     <button 
-                        onClick={() => onNavigate('settings')}
-                        className={`flex items-center gap-3 font-mono text-xs font-bold hover:text-[#191c1e] ${currentScreen === 'settings' ? 'text-[#ba0029]' : 'text-[#565e74]'}`}
-                    >
-                        <span className="material-symbols-outlined text-sm">settings</span> SETTINGS
-                    </button>
-                    <button 
                         onClick={onLogout}
                         className="flex items-center gap-3 font-mono text-xs font-bold text-[#565e74] hover:text-[#191c1e]"
                     >

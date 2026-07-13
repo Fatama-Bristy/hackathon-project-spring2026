@@ -10,7 +10,6 @@ import CorruptionLedger from './features/CorruptionLedger';
 import Whistleblower from './features/WhistleblowerPortal';
 import SosFlareScreen from './features/SosFlareScreen'; 
 import SemanticFactChecker from './features/SemanticFactChecker'; 
-import SystemSettings from './features/SystemSettings'; // ইমপোর্ট করা হলো
 
 function App() {
   const [screen, setScreen] = useState('landing'); 
@@ -33,8 +32,7 @@ function App() {
     return <AntiKuddusRegister onBack={() => setScreen('login')} />;
   }
 
-  // 'settings' এখানে যুক্ত করা হয়েছে
-  const allMissions = ['dashboard', 'seating', 'ai-syllabus', 'whistleblower', 'economy-ledger', 'sos-flare', 'semantic-fact-checker', 'settings'];
+  const allMissions = ['dashboard', 'seating', 'ai-syllabus', 'whistleblower', 'economy-ledger', 'sos-flare', 'semantic-fact-checker'];
 
   if (allMissions.includes(screen)) {
     return (
@@ -53,7 +51,6 @@ function App() {
           {screen === 'whistleblower' && <Whistleblower />}
           {screen === 'sos-flare' && <SosFlareScreen />}
           {screen === 'semantic-fact-checker' && <SemanticFactChecker />}
-          {screen === 'settings' && <SystemSettings />} 
         </div>
       </div>
     );
